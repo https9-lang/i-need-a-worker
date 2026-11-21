@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>I Need a Worker</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f3f7f4;color:#183328}
@@ -14,11 +15,12 @@ header{background:linear-gradient(135deg,#087b48,#12a568);color:white;padding:22
 header h1{font-size:23px;margin:0}
 header p{font-size:12px;margin:5px 0 0;color:#e2ffed}
 .container{max-width:750px;margin:auto;padding:14px}
-.searchbox{background:white;padding:13px;border-radius:16px;box-shadow:0 3px 12px #0000000d;margin-top:-5px}
+.searchbox{background:white;padding:13px;border-radius:16px;box-shadow:0 3px 12px #0000000d;margin-top:5px}
 input,select,textarea{width:100%;padding:13px;border:1px solid #dce8df;border-radius:11px;margin:6px 0 12px;font-size:15px;background:#fff;color:#183328}
 textarea{min-height:85px;resize:vertical}
 label{font-size:13px;font-weight:bold}
 button{border:0;border-radius:11px;padding:12px 15px;font-size:14px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
 button:active{transform:scale(.98)}
 .primary{background:#07864d;color:white}
 .secondary{background:#e5f5eb;color:#087b48}
@@ -37,7 +39,7 @@ button:active{transform:scale(.98)}
 .tile button{width:100%;font-size:12px;padding:10px}
 .card{background:white;border-radius:15px;padding:15px;margin:10px 0;box-shadow:0 3px 12px #0000000a;border:1px solid #e8eee9}
 .card h3{margin:0 0 9px;color:#12613d;font-size:17px}
-.meta{font-size:13px;line-height:1.8;color:#52665a}
+.meta{font-size:13px;line-height:1.8;color:#52665a;overflow-wrap:anywhere}
 .tag{display:inline-block;background:#e6f6ec;color:#087b48;padding:4px 9px;border-radius:20px;font-size:11px;margin:3px 0}
 .actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .actions button{font-size:12px;padding:9px 12px}
@@ -55,11 +57,16 @@ footer{text-align:center;color:#6d8074;font-size:12px;padding:25px 10px}
 .modal{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:15px;z-index:10}
 .modal.show{display:flex}
 .modal-content{background:white;border-radius:18px;padding:20px;width:100%;max-width:420px;max-height:90vh;overflow:auto}
-.modal-head{display:flex;justify-content:space-between;align-items:center}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .modal-head button{background:#f0f3f1;padding:7px 11px}
-@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}.nav{grid-template-columns:repeat(7,1fr)}}
+.whatsapp{display:inline-block;background:#087b48;color:white;padding:11px 16px;border-radius:10px;text-decoration:none;font-weight:bold}
+@media(min-width:600px){
+ .grid{grid-template-columns:repeat(3,1fr)}
+ .nav{grid-template-columns:repeat(7,1fr)}
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -73,217 +80,290 @@ footer{text-align:center;color:#6d8074;font-size:12px;padding:25px 10px}
 </header>
 
 <div class="container">
- <div id="status">অ্যাপ সংযোগ হচ্ছে...</div>
 
- <div class="searchbox">
-  <label>কাজ বা শ্রমিক খুঁজুন</label>
-  <input id="searchInput" placeholder="যেমন: রাজমিস্ত্রি, ইলেকট্রিশিয়ান...">
-  <button class="primary" style="width:100%" onclick="searchAll()">খুঁজুন</button>
- </div>
+<div id="status">অ্যাপ সংযোগ হচ্ছে...</div>
 
- <div class="nav">
-  <button class="active" data-page="home" onclick="showPage('home',this)">🏠<br>হোম</button>
-  <button data-page="workers" onclick="showPage('workers',this)">👷<br>শ্রমিক</button>
-  <button data-page="jobs" onclick="showPage('jobs',this)">💼<br>কাজ</button>
-  <button data-page="register" onclick="showPage('register',this)">📝<br>নিবন্ধন</button>
-  <button data-page="postjob" onclick="showPage('postjob',this)">➕<br>কাজ পোস্ট</button>
-  <button data-page="services" onclick="showPage('services',this)">🛠️<br>সার্ভিস</button>
-  <button data-page="admin" onclick="showPage('admin',this)">🔐<br>অ্যাডমিন</button>
- </div>
+<div class="searchbox">
+ <label>কাজ বা শ্রমিক খুঁজুন</label>
+ <input id="searchInput" placeholder="যেমন: রাজমিস্ত্রি, ইলেকট্রিশিয়ান...">
+ <button class="primary" style="width:100%" onclick="searchAll()">খুঁজুন</button>
+</div>
 
- <section id="home" class="page active">
-  
-<div class="notice">
-  📢 **বিশেষ নোটিশ**<br>
+<div class="nav">
+ <button class="active" data-page="home" onclick="showPage('home',this)">🏠<br>হোম</button>
+ <button data-page="workers" onclick="showPage('workers',this)">👷<br>শ্রমিক</button>
+ <button data-page="jobs" onclick="showPage('jobs',this)">💼<br>কাজ</button>
+ <button data-page="register" onclick="showPage('register',this)">📝<br>নিবন্ধন</button>
+ <button data-page="postjob" onclick="showPage('postjob',this)">➕<br>কাজ পোস্ট</button>
+ <button data-page="services" onclick="showPage('services',this)">🛠️<br>সার্ভিস</button>
+ <button data-page="admin" onclick="showPage('admin',this)">🔐<br>অ্যাডমিন</button>
+</div>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+ <div class="notice">
+  📢 <strong>বিশেষ নোটিশ</strong><br>
   যেকোনো বড় ডিল বা প্রজেক্ট দিতে সরাসরি অ্যাডমিনের সাথে যোগাযোগ করুন।
   <br><br>
-  <a href="https://wa.me/966564141762" target="_blank"
-     style="display:inline-block;background:#087b48;color:white;padding:11px 16px;border-radius:10px;text-decoration:none;font-weight:bold;">
-    Message hm shohan on WhatsApp
+  <a class="whatsapp" href="https://wa.me/966564141762" target="_blank" rel="noopener">
+   Message hm shohan on WhatsApp
   </a>
-  
-</div>
-   <div class="card">
+ </div>
+
+ <div class="card">
   <h3>📢 অ্যাডমিনের নোটিশ</h3>
   <div id="noticeBoard">কোনো নোটিশ প্রকাশ করা হয়নি।</div>
+ </div>
+
+ <h2 class="section-title">কোন সেবা খুঁজছেন?</h2>
+
+ <div class="grid">
+  <div class="tile"><div class="emoji">🧱</div><h3>রাজমিস্ত্রি</h3><button class="secondary" onclick="quickSearch('রাজমিস্ত্রি')">খুঁজুন</button></div>
+  <div class="tile"><div class="emoji">⚡</div><h3>ইলেকট্রিশিয়ান</h3><button class="secondary" onclick="quickSearch('ইলেকট্রিশিয়ান')">খুঁজুন</button></div>
+  <div class="tile"><div class="emoji">🚰</div><h3>প্লাম্বার</h3><button class="secondary" onclick="quickSearch('প্লাম্বার')">খুঁজুন</button></div>
+  <div class="tile"><div class="emoji">🏠</div><h3>বাসার কাজের লোক</h3><button class="secondary" onclick="quickSearch('বাসার কাজ')">খুঁজুন</button></div>
+  <div class="tile"><div class="emoji">🍽️</div><h3>ক্যাটারিং কর্মী</h3><button class="secondary" onclick="quickSearch('ক্যাটারিং')">খুঁজুন</button></div>
+  <div class="tile"><div class="emoji">🎨</div><h3>ডেকোরেটর</h3><button class="secondary" onclick="openService('ডেকোরেটর ভাড়া')">ভাড়া করুন</button></div>
+  <div class="tile"><div class="emoji">🔊</div><h3>সাউন্ড সিস্টেম</h3><button class="secondary" onclick="openService('সাউন্ড সিস্টেম ভাড়া')">ভাড়া করুন</button></div>
+  <div class="tile"><div class="emoji">👨‍🍳</div><h3>ক্যাটারিং সার্ভিস</h3><button class="secondary" onclick="openService('ক্যাটারিং কর্মী')">কর্মী নিন</button></div>
+ </div>
+
+ <h2 class="section-title">সাম্প্রতিক কাজের বিজ্ঞাপন</h2>
+ <div id="homeJobs"><div class="empty">তথ্য লোড হচ্ছে...</div></div>
+
+ <h2 class="section-title">সাম্প্রতিক শ্রমিক</h2>
+ <div id="homeWorkers"></div>
+</section>
+
+<!-- WORKERS -->
+<section id="workers" class="page">
+ <h2 class="section-title">শ্রমিক খুঁজুন</h2>
+ <select id="workerFilter" onchange="renderWorkers()">
+  <option value="">সব ধরনের শ্রমিক</option>
+  <option>রাজমিস্ত্রি</option>
+  <option>ইলেকট্রিশিয়ান</option>
+  <option>প্লাম্বার</option>
+  <option>কাঠমিস্ত্রি</option>
+  <option>রংমিস্ত্রি</option>
+  <option>ড্রাইভার</option>
+  <option>ক্যাটারিং কর্মী</option>
+  <option>বাসার কাজের লোক</option>
+  <option>অন্যান্য</option>
+ </select>
+ <div id="workerList"><div class="empty">শ্রমিকের তথ্য লোড হচ্ছে...</div></div>
+</section>
+
+<!-- JOBS -->
+<section id="jobs" class="page">
+ <h2 class="section-title">চাকরি ও কাজের বিজ্ঞাপন</h2>
+ <div id="jobList"><div class="empty">কাজের তথ্য লোড হচ্ছে...</div></div>
+</section>
+
+<!-- REGISTER -->
+<section id="register" class="page">
+ <div class="formbox">
+  <h2 class="section-title">শ্রমিক হিসেবে নিবন্ধন</h2>
+  <form id="workerForm">
+   <label>আপনার নাম *</label>
+   <input name="name" required placeholder="সম্পূর্ণ নাম">
+
+   <label>মোবাইল নম্বর *</label>
+   <input name="phone" required type="tel" placeholder="01XXXXXXXXX">
+
+   <label>কাজের ধরন *</label>
+   <select name="category" required>
+    <option value="">নির্বাচন করুন</option>
+    <option>রাজমিস্ত্রি</option>
+    <option>ইলেকট্রিশিয়ান</option>
+    <option>প্লাম্বার</option>
+    <option>কাঠমিস্ত্রি</option>
+    <option>রংমিস্ত্রি</option>
+    <option>ড্রাইভার</option>
+    <option>ক্যাটারিং কর্মী</option>
+    <option>বাসার কাজের লোক</option>
+    <option>অন্যান্য</option>
+   </select>
+
+   <label>আপনার জেলা/উপজেলা *</label>
+   <input name="location" required placeholder="যেমন: শরীয়তপুর, ডামুড্যা">
+
+   <label>কাজের অভিজ্ঞতা</label>
+   <input name="experience" placeholder="যেমন: ৫ বছর">
+
+   <label>দৈনিক বা মাসিক মজুরি</label>
+   <input name="salary" placeholder="যেমন: ৮০০ টাকা দৈনিক">
+
+   <label>নিজের সম্পর্কে লিখুন</label>
+   <textarea name="details" placeholder="আপনার দক্ষতা ও কাজের বিবরণ"></textarea>
+
+   <button class="primary" type="submit" style="width:100%">নিবন্ধন জমা দিন</button>
+  </form>
+ </div>
+</section>
+
+<!-- POST JOB -->
+<section id="postjob" class="page">
+ <div class="formbox">
+  <h2 class="section-title">কাজের বিজ্ঞাপন দিন</h2>
+  <form id="jobForm">
+   <label>কাজের শিরোনাম *</label>
+   <input name="title" required placeholder="যেমন: বাড়ি নির্মাণের জন্য রাজমিস্ত্রি লাগবে">
+
+   <label>কাজের ধরন *</label>
+   <select name="category" required>
+    <option value="">নির্বাচন করুন</option>
+    <option>রাজমিস্ত্রি</option>
+    <option>ইলেকট্রিশিয়ান</option>
+    <option>প্লাম্বার</option>
+    <option>কাঠমিস্ত্রি</option>
+    <option>রংমিস্ত্রি</option>
+    <option>ড্রাইভার</option>
+    <option>ক্যাটারিং কর্মী</option>
+    <option>বাসার কাজের লোক</option>
+    <option>অন্যান্য</option>
+   </select>
+
+   <label>কাজের স্থান *</label>
+   <input name="location" required placeholder="জেলা ও উপজেলা">
+
+   <label>বেতন/মজুরি</label>
+   <input name="salary" placeholder="যেমন: ১০০০ টাকা দৈনিক">
+
+   <label>যোগাযোগের মোবাইল *</label>
+   <input name="phone" required type="tel" placeholder="01XXXXXXXXX">
+
+   <label>কাজের বিবরণ</label>
+   <textarea name="details" placeholder="কতজন লোক লাগবে, কতদিনের কাজ ইত্যাদি"></textarea>
+
+   <button class="primary" type="submit" style="width:100%">কাজ পোস্ট করুন</button>
+  </form>
+ </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="page">
+ <h2 class="section-title">ভাড়া ও বিশেষ সার্ভিস</h2>
+
+ <div class="grid">
+  <div class="tile"><div class="emoji">🎨</div><h3>ডেকোরেটর ভাড়া করুন</h3><button class="primary" onclick="openService('ডেকোরেটর ভাড়া')">বুকিং দিন</button></div>
+  <div class="tile"><div class="emoji">🔊</div><h3>সাউন্ড সিস্টেম ভাড়া করুন</h3><button class="primary" onclick="openService('সাউন্ড সিস্টেম ভাড়া')">বুকিং দিন</button></div>
+  <div class="tile"><div class="emoji">🍽️</div><h3>ক্যাটারিং কর্মী নিন</h3><button class="primary" onclick="openService('ক্যাটারিং কর্মী')">বুকিং দিন</button></div>
+  <div class="tile"><div class="emoji">🧱</div><h3>রাজমিস্ত্রির কাজ</h3><button class="primary" onclick="openService('রাজমিস্ত্রির কাজ')">অনুরোধ দিন</button></div>
+ </div>
+
+ <div class="formbox" style="margin-top:15px">
+  <h3>সার্ভিসের জন্য অনুরোধ করুন</h3>
+  <form id="serviceForm">
+   <label>কোন সার্ভিস লাগবে? *</label>
+   <select name="service" id="serviceType" required>
+    <option value="">নির্বাচন করুন</option>
+    <option>ডেকোরেটর ভাড়া</option>
+    <option>সাউন্ড সিস্টেম ভাড়া</option>
+    <option>ক্যাটারিং কর্মী</option>
+    <option>রাজমিস্ত্রির কাজ</option>
+    <option>অন্যান্য</option>
+   </select>
+
+   <label>আপনার নাম *</label>
+   <input name="name" required>
+
+   <label>মোবাইল নম্বর *</label>
+   <input name="phone" required type="tel">
+
+   <label>কাজের স্থান *</label>
+   <input name="location" required>
+
+   <label>অনুষ্ঠান/কাজের তারিখ</label>
+   <input name="date" type="date">
+
+   <label>বিস্তারিত</label>
+   <textarea name="details"></textarea>
+
+   <button class="primary" type="submit" style="width:100%">অনুরোধ জমা দিন</button>
+  </form>
+ </div>
+
+ <div id="serviceList"></div>
+</section>
+
+<!-- ADMIN -->
+<section id="admin" class="page">
+ <div class="formbox" id="adminLoginBox">
+  <h2 class="section-title">🔐 অ্যাডমিন লগইন</h2>
+  <form id="adminLoginForm">
+   <label>অ্যাডমিন ইমেইল</label>
+   <input id="adminEmail" type="email" required placeholder="আপনার ইমেইল">
+
+   <label>পাসওয়ার্ড</label>
+   <input id="adminPassword" type="password" required placeholder="পাসওয়ার্ড">
+
+   <button class="primary" type="submit" style="width:100%">লগইন করুন</button>
+  </form>
+ </div>
+
+ <div id="adminPanel" class="hidden">
+  <div class="card">
+   <div class="modal-head">
+    <h3>অ্যাডমিন ড্যাশবোর্ড</h3>
+    <button class="danger" onclick="adminLogout()">লগআউট</button>
    </div>
-   <div class="card">
-  <h3>📢 জরুরি নোটিশ</h3>
-  <div id="noticeBoard"></div>
+
+   <div class="admin-stat">
+    <div class="stat"><b id="workerCount">0</b><small>শ্রমিক</small></div>
+    <div class="stat"><b id="jobCount">0</b><small>কাজ</small></div>
+    <div class="stat"><b id="serviceCount">0</b><small>সার্ভিস</small></div>
    </div>
-  <h2 class="section-title">কোন সেবা খুঁজছেন?</h2>
-  <div class="grid">
-   <div class="tile"><div class="emoji">🧱</div><h3>রাজমিস্ত্রি</h3><button class="secondary" onclick="quickSearch('রাজমিস্ত্রি')">খুঁজুন</button></div>
-   <div class="tile"><div class="emoji">⚡</div><h3>ইলেকট্রিশিয়ান</h3><button class="secondary" onclick="quickSearch('ইলেকট্রিশিয়ান')">খুঁজুন</button></div>
-   <div class="tile"><div class="emoji">🚰</div><h3>প্লাম্বার</h3><button class="secondary" onclick="quickSearch('প্লাম্বার')">খুঁজুন</button></div>
-   <div class="tile"><div class="emoji">🏠</div><h3>বাসার কাজের লোক</h3><button class="secondary" onclick="quickSearch('বাসার কাজ')">খুঁজুন</button></div>
-   <div class="tile"><div class="emoji">🍽️</div><h3>ক্যাটারিং কর্মী</h3><button class="secondary" onclick="quickSearch('ক্যাটারিং')">খুঁজুন</button></div>
-   <div class="tile"><div class="emoji">🎨</div><h3>ডেকোরেটর</h3><button class="secondary" onclick="openService('ডেকোরেটর ভাড়া')">ভাড়া করুন</button></div>
-   <div class="tile"><div class="emoji">🔊</div><h3>সাউন্ড সিস্টেম</h3><button class="secondary" onclick="openService('সাউন্ড সিস্টেম ভাড়া')">ভাড়া করুন</button></div>
-   <div class="tile"><div class="emoji">👨‍🍳</div><h3>ক্যাটারিং সার্ভিস</h3><button class="secondary" onclick="openService('ক্যাটারিং কর্মী')">কর্মী নিন</button></div>
   </div>
-  <h2 class="section-title">সাম্প্রতিক কাজের বিজ্ঞাপন</h2>
-  <div id="homeJobs"><div class="empty">তথ্য লোড হচ্ছে...</div></div>
-  <div id="homeWorkers"><div class="empty">তথ্য লোড হচ্ছে...</div></div>
- </section>
 
- <section id="workers" class="page">
-  <h2 class="section-title">শ্রমিক খুঁজুন</h2>
-  <select id="workerFilter" onchange="renderWorkers()">
-   <option value="">সব ধরনের শ্রমিক</option>
-   <option>রাজমিস্ত্রি</option><option>ইলেকট্রিশিয়ান</option><option>প্লাম্বার</option>
-   <option>কাঠমিস্ত্রি</option><option>রংমিস্ত্রি</option><option>ড্রাইভার</option>
-   <option>ক্যাটারিং কর্মী</option><option>বাসার কাজের লোক</option><option>অন্যান্য</option>
-  </select>
-  <div id="workerList"><div class="empty">শ্রমিকের তথ্য লোড হচ্ছে...</div></div>
- </section>
-
- <section id="jobs" class="page">
-  <h2 class="section-title">চাকরি ও কাজের বিজ্ঞাপন</h2>
-  <div id="jobList"><div class="empty">কাজের তথ্য লোড হচ্ছে...</div></div>
- </section>
-
- <section id="register" class="page">
   <div class="formbox">
-   <h2 class="section-title">শ্রমিক হিসেবে নিবন্ধন</h2>
-   <form id="workerForm">
-    <label>আপনার নাম *</label><input name="name" required placeholder="সম্পূর্ণ নাম">
-    <label>মোবাইল নম্বর *</label><input name="phone" required type="tel" placeholder="01XXXXXXXXX">
-    <label>কাজের ধরন *</label>
-    <select name="category" required>
-     <option value="">নির্বাচন করুন</option>
-     <option>রাজমিস্ত্রি</option><option>ইলেকট্রিশিয়ান</option><option>প্লাম্বার</option>
-     <option>কাঠমিস্ত্রি</option><option>রংমিস্ত্রি</option><option>ড্রাইভার</option>
-     <option>ক্যাটারিং কর্মী</option><option>বাসার কাজের লোক</option><option>অন্যান্য</option>
-    </select>
-    <label>আপনার জেলা/উপজেলা *</label><input name="location" required placeholder="যেমন: শরীয়তপুর, ডামুড্যা">
-    <label>কাজের অভিজ্ঞতা</label><input name="experience" placeholder="যেমন: ৫ বছর">
-    <label>দৈনিক বা মাসিক মজুরি</label><input name="salary" placeholder="যেমন: ৮০০ টাকা দৈনিক">
-    <label>নিজের সম্পর্কে লিখুন</label><textarea name="details" placeholder="আপনার দক্ষতা ও কাজের বিবরণ"></textarea>
-    <button class="primary" type="submit" style="width:100%">নিবন্ধন জমা দিন</button>
-   </form>
-  </div>
- </section>
- 
-
- <section id="postjob" class="page">
-  <div class="formbox">
-   <h2 class="section-title">কাজের বিজ্ঞাপন দিন</h2>
-   <form id="jobForm">
-    <label>কাজের শিরোনাম *</label><input name="title" required placeholder="যেমন: বাড়ি নির্মাণের জন্য রাজমিস্ত্রি লাগবে">
-    <label>কাজের ধরন *</label>
-    <select name="category" required>
-     <option value="">নির্বাচন করুন</option>
-     <option>রাজমিস্ত্রি</option><option>ইলেকট্রিশিয়ান</option><option>প্লাম্বার</option>
-     <option>কাঠমিস্ত্রি</option><option>রংমিস্ত্রি</option><option>ড্রাইভার</option>
-     <option>ক্যাটারিং কর্মী</option><option>বাসার কাজের লোক</option><option>অন্যান্য</option>
-    </select>
-    <label>কাজের স্থান *</label><input name="location" required placeholder="জেলা ও উপজেলা">
-    <label>বেতন/মজুরি</label><input name="salary" placeholder="যেমন: ১০০০ টাকা দৈনিক">
-    <label>যোগাযোগের মোবাইল *</label><input name="phone" required type="tel" placeholder="01XXXXXXXXX">
-    <label>কাজের বিবরণ</label><textarea name="details" placeholder="কতজন লোক লাগবে, কতদিনের কাজ ইত্যাদি"></textarea>
-    <button class="primary" type="submit" style="width:100%">কাজ পোস্ট করুন</button>
-   </form>
-  </div>
- </section>
-
- <section id="services" class="page">
-  <h2 class="section-title">ভাড়া ও বিশেষ সার্ভিস</h2>
-  <div class="grid">
-   <div class="tile"><div class="emoji">🎨</div><h3>ডেকোরেটর ভাড়া করুন</h3><button class="primary" onclick="openService('ডেকোরেটর ভাড়া')">বুকিং দিন</button></div>
-   <div class="tile"><div class="emoji">🔊</div><h3>সাউন্ড সিস্টেম ভাড়া করুন</h3><button class="primary" onclick="openService('সাউন্ড সিস্টেম ভাড়া')">বুকিং দিন</button></div>
-   <div class="tile"><div class="emoji">🍽️</div><h3>ক্যাটারিং কর্মী নিন</h3><button class="primary" onclick="openService('ক্যাটারিং কর্মী')">বুকিং দিন</button></div>
-   <div class="tile"><div class="emoji">🧱</div><h3>রাজমিস্ত্রির কাজ</h3><button class="primary" onclick="openService('রাজমিস্ত্রির কাজ')">অনুরোধ দিন</button></div>
-  </div>
-  <div class="formbox" style="margin-top:15px">
-   <h3>সার্ভিসের জন্য অনুরোধ করুন</h3>
-   <form id="serviceForm">
-    <label>কোন সার্ভিস লাগবে? *</label>
-    <select name="service" id="serviceType" required>
-     <option value="">নির্বাচন করুন</option>
-     <option>ডেকোরেটর ভাড়া</option><option>সাউন্ড সিস্টেম ভাড়া</option>
-     <option>ক্যাটারিং কর্মী</option><option>রাজমিস্ত্রির কাজ</option><option>অন্যান্য</option>
-    </select>
-    <label>আপনার নাম *</label><input name="name" required>
-    <label>মোবাইল নম্বর *</label><input name="phone" required type="tel">
-    <label>কাজের স্থান *</label><input name="location" required>
-    <label>অনুষ্ঠান/কাজের তারিখ</label><input name="date" type="date">
-    <label>বিস্তারিত</label><textarea name="details"></textarea>
-    <button class="primary" type="submit" style="width:100%">অনুরোধ জমা দিন</button>
-   </form>
-  </div>
-  <div id="serviceList"></div>
-   
- </section>
- 
-
- <section id="admin" class="page">
-  <div class="formbox">
-   <h2 class="section-title">🔐 অ্যাডমিন লগইন</h2>
-   <form id="adminLoginForm">
-    <label>অ্যাডমিন ইমেইল</label>
-    <input id="adminEmail" type="email" required placeholder="আপনার ইমেইল">
-    <label>পাসওয়ার্ড</label>
-    <input id="adminPassword" type="password" required placeholder="পাসওয়ার্ড">
-    <button class="primary" type="submit" style="width:100%">লগইন করুন</button>
-   </form>
+   <h3>📢 নতুন নোটিশ প্রকাশ করুন</h3>
+   <textarea id="noticeText" placeholder="আপনার নোটিশ লিখুন"></textarea>
+   <button class="primary" onclick="publishNotice()" style="width:100%">নোটিশ প্রকাশ করুন</button>
+   <button class="danger" onclick="clearNotice()" style="width:100%;margin-top:8px">নোটিশ মুছুন</button>
   </div>
 
-  <div id="adminPanel" class="hidden">
-   <div class="card">
-    <div class="modal-head">
-     <h3>অ্যাডমিন ড্যাশবোর্ড</h3>
-     <button class="danger" onclick="adminLogout()">লগআউট</button>
-    </div>
-    <div class="admin-stat">
-     <div class="stat"><b id="workerCount">0</b><small>শ্রমিক</small></div>
-     <div class="stat"><b id="jobCount">0</b><small>কাজ</small></div>
-     <div class="stat"><b id="serviceCount">0</b><small>সার্ভিস</small></div>
-    </div>
-   </div>
-    <div class="formbox">
-  <h3>📢 নতুন নোটিশ প্রকাশ করুন</h3>
-  <textarea id="noticeText" placeholder="আপনার নোটিশ লিখুন"></textarea>
-  <button class="primary" onclick="publishNotice()" style="width:100%">
-    নোটিশ প্রকাশ করুন
-  </button>
-  <button class="danger" onclick="clearNotice()" style="width:100%;margin-top:8px">
-    নোটিশ মুছুন
-  </button>
-    </div>
-   <h3 class="section-title">শ্রমিকের তথ্য</h3>
-   <div id="adminWorkers"></div>
-   <h3 class="section-title">কাজের বিজ্ঞাপন</h3>
-   <div id="adminJobs"></div>
-   <h3 class="section-title">সার্ভিস অনুরোধ</h3>
-   <div id="adminServices"></div>
-  </div>
- </section>
+  <h3 class="section-title">শ্রমিকের তথ্য</h3>
+  <div id="adminWorkers"></div>
 
- <footer>
-  <b>I Need a Worker</b><br>
-  আপনার কাজের বিশ্বস্ত সহযোগী<br><br>
-  Admin By MD SOHAN Howlader শরীয়তপুর
- </footer>
+  <h3 class="section-title">কাজের বিজ্ঞাপন</h3>
+  <div id="adminJobs"></div>
+
+  <h3 class="section-title">সার্ভিস অনুরোধ</h3>
+  <div id="adminServices"></div>
+ </div>
+</section>
+
+<footer>
+ <b>I Need a Worker</b><br>
+ আপনার কাজের বিশ্বস্ত সহযোগী<br><br>
+ Admin By MD SOHAN Howlader শরীয়তপুর
+</footer>
+
 </div>
 
+<!-- EDIT MODAL -->
 <div class="modal" id="editModal">
  <div class="modal-content">
   <div class="modal-head">
    <h3>তথ্য সম্পাদনা</h3>
    <button onclick="closeEdit()">✕</button>
   </div>
-  <div id="editFields"></div>
-  <button class="primary" style="width:100%" onclick="saveEdit()">পরিবর্তন সংরক্ষণ</button>
+  <form id="editForm">
+   <div id="editFields"></div>
+   <button class="primary" type="submit" style="width:100%">পরিবর্তন সংরক্ষণ</button>
+  </form>
  </div>
 </div>
-
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
 <script>
+"use strict";
+
+/* FIREBASE CONFIG */
 const firebaseConfig = {
  apiKey: "AIzaSyDR1nuJTnLjz7S1bjxQ7JaA0luUtapmCek",
  authDomain: "i-need-a-worker-cfc18.firebaseapp.com",
@@ -297,6 +377,7 @@ const firebaseConfig = {
 const ADMIN_UID = "Df1Vul2K0sdr6SDKc9XzMkRnxVx2";
 
 firebase.initializeApp(firebaseConfig);
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 
@@ -305,61 +386,101 @@ let jobs = [];
 let services = [];
 let isAdmin = false;
 let editing = null;
-let authReady = Promise.resolve();
+let authStarting = false;
 
-function $(id){ return document.getElementById(id); }
+function $(id){
+ return document.getElementById(id);
+}
 
 function status(message){
  $("status").textContent = message;
 }
 
 function escapeHTML(value){
- return String(value ?? "").replace(/[&<>"']/g, c => ({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
+ return String(value ?? "").replace(/[&<>"']/g, function(c){
+  return {
+   "&":"&amp;",
+   "<":"&lt;",
+   ">":"&gt;",
+   '"':"&quot;",
+   "'":"&#39;"
+  }[c];
+ });
+}
+
+function formData(form){
+ return Object.fromEntries(new FormData(form).entries());
 }
 
 function showPage(page, button){
- document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+ document.querySelectorAll(".page").forEach(function(p){
+  p.classList.remove("active");
+ });
+
  const target = $(page);
  if(target) target.classList.add("active");
 
- document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+ document.querySelectorAll(".nav button").forEach(function(b){
+  b.classList.remove("active");
+ });
+
  if(button) button.classList.add("active");
 
  if(page === "workers") renderWorkers();
  if(page === "jobs") renderJobs();
+ if(page === "services") renderServices();
  if(page === "admin") updateAdminView();
 }
-  
+
 function quickSearch(value){
  $("searchInput").value = value;
- showPage("workers", document.querySelector('[data-page="workers"]'));
- renderWorkers();
+ $("workerFilter").value = "";
+ showPage("workers",document.querySelector('[data-page="workers"]'));
+ renderWorkers(value.toLowerCase());
 }
 
 function searchAll(){
  const q = $("searchInput").value.trim().toLowerCase();
+
  if(!q){
   alert("কী খুঁজছেন লিখুন।");
   return;
  }
- showPage("workers", document.querySelector('[data-page="workers"]'));
+
+ $("workerFilter").value = "";
+ showPage("workers",document.querySelector('[data-page="workers"]'));
  renderWorkers(q);
+ renderJobs(q);
 }
 
 function openService(type){
  $("serviceType").value = type;
- showPage("services", document.querySelector('[data-page="services"]'));
- $("serviceType").scrollIntoView({behavior:"smooth",block:"center"});
+ showPage("services",document.querySelector('[data-page="services"]'));
+ $("serviceType").scrollIntoView({
+  behavior:"smooth",
+  block:"center"
+ });
 }
 
 function getActive(list){
- return list.filter(x => x.active !== false);
+ return list.filter(function(x){
+  return x.active !== false;
+ });
 }
 
+/* DATE SORT */
+function sortNewest(list){
+ return list.slice().sort(function(a,b){
+  const at = a.createdAt && a.createdAt.toMillis ? a.createdAt.toMillis() : 0;
+  const bt = b.createdAt && b.createdAt.toMillis ? b.createdAt.toMillis() : 0;
+  return bt - at;
+ });
+}
+
+/* WORKER CARD */
 function workerCard(x){
- return `<div class="card">
+ return `
+ <div class="card">
   <h3>${escapeHTML(x.name)}</h3>
   <span class="tag">${escapeHTML(x.category)}</span>
   <div class="meta">
@@ -375,8 +496,10 @@ function workerCard(x){
  </div>`;
 }
 
+/* JOB CARD */
 function jobCard(x){
- return `<div class="card">
+ return `
+ <div class="card">
   <h3>${escapeHTML(x.title)}</h3>
   <span class="tag">${escapeHTML(x.category)}</span>
   <div class="meta">
@@ -389,11 +512,12 @@ function jobCard(x){
    <a href="tel:${escapeHTML(x.phone)}"><button class="primary">📞 যোগাযোগ করুন</button></a>
   </div>
  </div>`;
-  }
-  
+}
 
+/* SERVICE CARD */
 function serviceCard(x){
- return `<div class="card">
+ return `
+ <div class="card">
   <h3>${escapeHTML(x.service)}</h3>
   <div class="meta">
    নাম: ${escapeHTML(x.name)}<br>
@@ -405,200 +529,327 @@ function serviceCard(x){
  </div>`;
 }
 
-function renderWorkers(search=""){
+/* RENDER WORKERS */
+function renderWorkers(search){
+ search = search || "";
  const filter = $("workerFilter").value;
- let list = getActive(workers);
 
- if(filter) list = list.filter(x => x.category === filter);
- if(search) list = list.filter(x =>
-  [x.name,x.category,x.location,x.details].join(" ").toLowerCase().includes(search)
- );
+ let list = sortNewest(getActive(workers));
+
+ if(filter){
+  list = list.filter(function(x){
+   return x.category === filter;
+  });
+ }
+
+ if(search){
+  list = list.filter(function(x){
+   return [
+    x.name,x.category,x.location,x.details
+   ].join(" ").toLowerCase().includes(search);
+  });
+ }
 
  $("workerList").innerHTML = list.length
   ? list.map(workerCard).join("")
   : '<div class="empty">কোনো শ্রমিক পাওয়া যায়নি।</div>';
 
-"homeWorkers").innerHTML = getActive(workers).slice(0,3).map(workerCard).join("");
+ const homeList = sortNewest(getActive(workers)).slice(0,3);
+
+ $("homeWorkers").innerHTML = homeList.length
+  ? homeList.map(workerCard).join("")
+  : "";
 }
 
-function renderJobs(){
- const list = getActive(jobs);
+/* RENDER JOBS */
+function renderJobs(search){
+ search = search || "";
+
+ let list = sortNewest(getActive(jobs));
+
+ if(search){
+  list = list.filter(function(x){
+   return [
+    x.title,x.category,x.location,x.details
+   ].join(" ").toLowerCase().includes(search);
+  });
+ }
+
  $("jobList").innerHTML = list.length
   ? list.map(jobCard).join("")
   : '<div class="empty">এখনো কোনো কাজ পোস্ট করা হয়নি।</div>';
 
- $("homeJobs").innerHTML = list.slice(0,3).map(jobCard).join("")
-  || '<div class="empty">এখনো কোনো কাজের বিজ্ঞাপন নেই।</div>';
+ const homeList = sortNewest(getActive(jobs)).slice(0,3);
+
+ $("homeJobs").innerHTML = homeList.length
+  ? homeList.map(jobCard).join("")
+  : '<div class="empty">এখনো কোনো কাজের বিজ্ঞাপন নেই।</div>';
 }
 
+/* RENDER SERVICES */
 function renderServices(){
- const list = getActive(services);
+ 
+ const list = sortNewest(getActive(services));
+
  $("serviceList").innerHTML = list.length
-  ? "<h3 class='section-title'>সাম্প্রতিক অনুরোধ</h3>" + list.slice(0,5).map(serviceCard).join("")
+  ? "<h3 class='section-title'>সাম্প্রতিক অনুরোধ</h3>" +
+    list.slice(0,5).map(serviceCard).join("")
   : "";
 }
 
+/* FIREBASE AUTH */
 async function ensureAuth(){
- if(auth.currentUser) return;
- await auth.signInAnonymously();
+ if(auth.currentUser) return auth.currentUser;
+ const result = await auth.signInAnonymously();
+ return result.user;
 }
 
-async function addRecord(collection, data){
- await authReady;
- if(!auth.currentUser) await ensureAuth();
+/* ADD DATA */
+async function addRecord(collection,data){
+ await ensureAuth();
 
  await db.collection(collection).add({
   ...data,
   active:true,
   createdAt:firebase.firestore.FieldValue.serverTimestamp()
  });
-  }
-   },err=>{
-  console.error(name,err);
-  status("Firebase সমস্যা: " + err.message);
+}
+
+/* FIRESTORE LISTENER */
+function listenCollection(name,callback){
+ db.collection(name).onSnapshot(function(snapshot){
+  const data = [];
+
+  snapshot.forEach(function(doc){
+   data.push({
+    id:doc.id,
+    ...doc.data()
+   });
+  });
+
+  callback(data);
+  status("Firebase সংযোগ সফল হয়েছে।");
+
+ },function(err){
+  console.error("Firestore "+name,err);
+  status("Firebase সমস্যা: "+err.message);
  });
 }
 
-listenCollection("workers", data=>{
+/* LOAD FIRESTORE DATA */
+listenCollection("workers",function(data){
  workers = data;
  renderWorkers();
  if(isAdmin) renderAdmin();
 });
 
-listenCollection("jobs", data=>{
+listenCollection("jobs",function(data){
  jobs = data;
  renderJobs();
  if(isAdmin) renderAdmin();
 });
-  
 
-function formData(form){
- return Object.fromEntries(new FormData(form).entries());
-}
-
-$("workerForm").addEventListener("submit", async function(e){
- e.preventDefault();
- const btn = this.querySelector("button[type=submit]");
- btn.disabled = true;
- btn.textContent = "জমা হচ্ছে...";
- try{
-  await addRecord("workers",formData(this));
-  alert("আপনার শ্রমিক নিবন্ধন সফলভাবে জমা হয়েছে।");
-  this.reset();
- }catch(err){
-  console.error(err);
-  alert("তথ্য জমা হয়নি: " + err.message);
- }finally{
-  btn.disabled = false;
-  btn.textContent = "নিবন্ধন জমা দিন";
- }
-});
-
-$("jobForm").addEventListener("submit", async function(e){
- e.preventDefault();
- const btn = this.querySelector("button[type=submit]");
- btn.disabled = true;
- try{
-  await addRecord("jobs",formData(this));
-  alert("কাজের বিজ্ঞাপন জমা হয়েছে।");
-  this.reset();
- }catch(err){
-  console.error(err);
-  alert("কাজ পোস্ট হয়নি: " + err.message);
- }finally{
-  btn.disabled = false;
- }
-});
-
-$("serviceForm").addEventListener("submit", async function(e){
- e.preventDefault();
- const btn = this.querySelector("button[type=submit]");
- btn.disabled = true;
- try{
-  await addRecord("services",formData(this));
-  alert("আপনার সার্ভিস অনুরোধ জমা হয়েছে।");
-  this.reset();
- }catch(err){
-  console.error(err);
-  alert("অনুরোধ জমা হয়নি: " + err.message);
- }finally{
-  btn.disabled = false;
- }
-});
-
-function listenCollection(name, callback){
- db.collection(name).orderBy("createdAt","desc").onSnapshot(snapshot=>{
-  const list = snapshot.docs.map(doc=>({id:doc.id,...doc.data()}));
-  callback(list);
-
-
-listenCollection("services", data=>{
+listenCollection("services",function(data){
  services = data;
  renderServices();
  if(isAdmin) renderAdmin();
 });
 
-function updateAdminView(){
- $("adminLoginForm").classList.toggle("hidden",isAdmin);
- $("adminPanel").classList.toggle("hidden",!isAdmin);
- if(isAdmin) renderAdmin();
-}
-
-$("adminLoginForm").addEventListener("submit",async function(e){
- e.preventDefault();
- const email = $("adminEmail").value.trim();
- const password = $("adminPassword").value;
-
- if(!email || !password){
-  alert("ইমেইল ও পাসওয়ার্ড লিখুন।");
-  return;
+/* NOTICE LISTENER */
+db.collection("notices").doc("current").onSnapshot(function(doc){
+ if(doc.exists){
+  $("noticeBoard").textContent = doc.data().message || "";
+ }else{
+  $("noticeBoard").textContent = "কোনো নোটিশ প্রকাশ করা হয়নি।";
  }
+},function(err){
+ console.error(err);
+ $("noticeBoard").textContent = "নোটিশ লোড করা যায়নি।";
+});
+
+/* WORKER FORM */
+$("workerForm").addEventListener("submit",async function(e){
+ e.preventDefault();
+ const form = this;
+ const btn = form.querySelector('button[type="submit"]');
+ btn.disabled = true;
 
  try{
-  const result = await auth.signInWithEmailAndPassword(email,password);
+  await addRecord("workers",formData(form));
+  alert("শ্রমিক নিবন্ধন সফল হয়েছে।");
+  form.reset();
+ }catch(err){
+  alert("জমা হয়নি: "+err.message);
+ }finally{
+  btn.disabled = false;
+ }
+});
+
+/* JOB FORM */
+$("jobForm").addEventListener("submit",async function(e){
+ e.preventDefault();
+ const form = this;
+ const btn = form.querySelector('button[type="submit"]');
+ btn.disabled = true;
+
+ try{
+  await addRecord("jobs",formData(form));
+  alert("কাজের বিজ্ঞাপন প্রকাশ হয়েছে।");
+  form.reset();
+ }catch(err){
+  alert("প্রকাশ হয়নি: "+err.message);
+ }finally{
+  btn.disabled = false;
+ }
+});
+
+/* SERVICE FORM */
+$("serviceForm").addEventListener("submit",async function(e){
+ e.preventDefault();
+ const form = this;
+ const btn = form.querySelector('button[type="submit"]');
+ btn.disabled = true;
+
+ try{
+  await addRecord("services",formData(form));
+  alert("সার্ভিস অনুরোধ জমা হয়েছে।");
+  form.reset();
+ }catch(err){
+  alert("জমা হয়নি: "+err.message);
+ }finally{
+  btn.disabled = false;
+ }
+});
+
+/* ADMIN LOGIN */
+$("adminLoginForm").addEventListener("submit",async function(e){
+ e.preventDefault();
+
+ const btn = this.querySelector('button[type="submit"]');
+ btn.disabled = true;
+
+ try{
+  const result = await auth.signInWithEmailAndPassword(
+   $("adminEmail").value.trim(),
+   $("adminPassword").value
+  );
 
   if(result.user.uid !== ADMIN_UID){
    await auth.signOut();
-   isAdmin = false;
-   alert("এই অ্যাকাউন্টের অ্যাডমিন অনুমতি নেই।");
+   alert("এই অ্যাকাউন্ট অ্যাডমিন নয়।");
    return;
   }
 
   isAdmin = true;
-  alert("অ্যাডমিন লগইন সফল হয়েছে।");
   updateAdminView();
+  renderAdmin();
+  alert("অ্যাডমিন লগইন সফল হয়েছে।");
+
  }catch(err){
-  console.error(err);
-  alert("লগইন হয়নি: " + err.message);
+  alert("লগইন হয়নি: "+err.message);
+ }finally{
+  btn.disabled = false;
  }
 });
 
-async function adminLogout(){
- try{
-  isAdmin = false;
-  await auth.signOut();
+/* AUTH STATE */
+auth.onAuthStateChanged(async function(user){
+ if(user){
+  isAdmin = user.uid === ADMIN_UID;
   updateAdminView();
-  alert("অ্যাডমিন লগআউট হয়েছে।");
- }catch(err){
-  alert(err.message);
+  if(isAdmin) renderAdmin();
+  return;
+ }
+
+ isAdmin = false;
+ updateAdminView();
+
+ if(!authStarting){
+  authStarting = true;
+  try{
+   await auth.signInAnonymously();
+  }catch(err){
+   status("লগইন সমস্যা: "+err.message);
+  }finally{
+   authStarting = false;
+  }
+ }
+});
+
+function showOK(message){
+ alert("✅ OK\n" + message);
+ }
+ 
+
+function showSuccess(message){
+ const old = document.getElementById("successPopup");
+ if(old) old.remove();
+
+ const popup = document.createElement("div");
+ popup.id = "successPopup";
+ popup.style.cssText = `
+ position:fixed; inset:0; background:#0009;
+ display:flex; align-items:center; justify-content:center;
+ z-index:99999; padding:20px;`;
+
+ popup.innerHTML = `
+ <div style="background:white;padding:25px;border-radius:18px;
+ text-align:center;width:100%;max-width:320px;color:#222">
+ <h2 style="color:green">✅ সফল হয়েছে!</h2>
+ <p>${message}</p>
+ <button onclick="document.getElementById('successPopup').remove()"
+ style="padding:12px 25px;background:#16a34a;color:white;
+ border:0;border-radius:8px;margin:5px">OK</button>
+ <button onclick="document.getElementById('successPopup').remove();showPage('home')"
+ style="padding:12px 25px;background:#2563eb;color:white;
+ border:0;border-radius:8px;margin:5px">HOME</button>
+ </div>`;
+
+ document.body.appendChild(popup);
+ }
+ 
+/* ADMIN PANEL - SECURE */
+function updateAdminView(){
+ const allowed = !!(
+  auth.currentUser &&
+  auth.currentUser.uid === ADMIN_UID
+ );
+
+ isAdmin = allowed;
+
+ $("adminPanel").classList.toggle("hidden", !allowed);
+ $("adminLoginBox").classList.toggle("hidden", allowed);
+}
+
+async function adminLogout(){
+ if(!confirm("লগআউট করবেন?")) return;
+
+ try{
+  await auth.signOut();
+  isAdmin = false;
+  updateAdminView();
+  alert("✅ OK — লগআউট সফল হয়েছে!");
+ }catch(error){
+  alert("লগআউট করা যায়নি: " + error.message);
  }
 }
 
-auth.onAuthStateChanged(user=>{
- if(user && user.uid === ADMIN_UID){
-  isAdmin = true;
- }else{
-  isAdmin = false;
-  if(!user){
-   authReady = auth.signInAnonymously().catch(err=>{
-    console.error(err);
-    status("লগইন সমস্যা: " + err.message);
-   });
-  }
- }
- updateAdminView();
-});
+/* ADMIN CARD */
+function adminCard(collection,x,title,description){
+ return `
+ <div class="card">
+  <h3>${escapeHTML(title)}</h3>
+  <div class="meta">${description}</div>
+  <span class="tag">${x.active !== false ? "সক্রিয়":"বন্ধ"}</span>
+  <div class="actions">
+   <button class="secondary" onclick="editRecord('${collection}','${x.id}')">✏️ সম্পাদনা</button>
+   <button class="dark" onclick="toggleRecord('${collection}','${x.id}')">${x.active !== false ? "বন্ধ করুন":"চালু করুন"}</button>
+   <button class="danger" onclick="deleteRecord('${collection}','${x.id}')">মুছুন</button>
+  </div>
+ </div>`;
+}
 
+/* RENDER ADMIN */
 function renderAdmin(){
  if(!isAdmin) return;
 
@@ -606,154 +857,149 @@ function renderAdmin(){
  $("jobCount").textContent = jobs.length;
  $("serviceCount").textContent = services.length;
 
- $("adminWorkers").innerHTML = adminCards(workers,"workers");
- $("adminJobs").innerHTML = adminCards(jobs,"jobs");
- $("adminServices").innerHTML = adminCards(services,"services");
+ $("adminWorkers").innerHTML = workers.length
+ ? sortNewest(workers).map(x=>adminCard(
+  "workers",x,x.name,
+  "কাজ: "+escapeHTML(x.category)+"<br>মোবাইল: "+escapeHTML(x.phone)+"<br>স্থান: "+escapeHTML(x.location)
+ )).join("")
+ : '<div class="empty">কোনো শ্রমিক নেই।</div>';
+
+ $("adminJobs").innerHTML = jobs.length
+ ? sortNewest(jobs).map(x=>adminCard(
+  "jobs",x,x.title,
+  "ধরন: "+escapeHTML(x.category)+"<br>মোবাইল: "+escapeHTML(x.phone)+"<br>স্থান: "+escapeHTML(x.location)
+ )).join("")
+ : '<div class="empty">কোনো বিজ্ঞাপন নেই।</div>';
+
+ $("adminServices").innerHTML = services.length
+ ? sortNewest(services).map(x=>adminCard(
+  "services",x,x.service,
+  "নাম: "+escapeHTML(x.name)+"<br>মোবাইল: "+escapeHTML(x.phone)+"<br>স্থান: "+escapeHTML(x.location)
+ )).join("")
+ : '<div class="empty">কোনো সার্ভিস নেই।</div>';
 }
 
-function adminCards(list,type){
- if(!list.length) return '<div class="empty">কোনো তথ্য নেই।</div>';
-
- return list.map(x=>{
-  const title = x.name || x.title || x.service || "তথ্য";
-  return `<div class="card">
-   <h3>${escapeHTML(title)}</h3>
-   <div class="meta">
-    ${escapeHTML(x.category || x.location || x.phone || "")}<br>
-    অবস্থা: ${x.active === false ? "বন্ধ" : "চালু"}
-   </div>
-   <div class="actions">
-    <button class="secondary" onclick="editRecord('${type}','${x.id}')">✏️ এডিট</button>
-    <button class="secondary" onclick="toggleRecord('${type}','${x.id}',${x.active === false ? "true" : "false"})">${x.active === false ? "চালু করুন" : "বন্ধ করুন"}</button>
-    <button class="danger" onclick="deleteRecord('${type}','${x.id}')">🗑️ ডিলিট</button>
-   </div>
-  </div>`;
- }).join("");
-}
-
-function updateAdminView(){
- $("adminLoginForm").classList.toggle("hidden",isAdmin);
- $("adminPanel").classList.toggle("hidden",!isAdmin);
- if(isAdmin) renderAdmin();
-}
-
-function findRecord(type,id){
- const list = type === "workers" ? workers : type === "jobs" ? jobs : services;
- return list.find(x=>x.id === id);
-}
-
-function editRecord(type,id){
+/* EDIT RECORD */
+function editRecord(collection,id){
  if(!isAdmin) return alert("অ্যাডমিন লগইন করুন।");
- const x = findRecord(type,id);
- if(!x) return alert("তথ্য পাওয়া যায়নি।");
 
- editing = {type,id};
- const fields = type === "workers"
-  ? ["name","phone","category","location","experience","salary","details"]
-  : type === "jobs"
-  ? ["title","category","location","salary","phone","details"]
-  : ["service","name","phone","location","date","details"];
+ const list = collection==="workers" ? workers :
+              collection==="jobs" ? jobs : services;
 
- $("editFields").innerHTML = fields.map(field=>`
-  <label>${field}</label>
-  <input id="edit_${field}" value="${escapeHTML(x[field] || "")}">
+ const item = list.find(x=>x.id===id);
+ if(!item) return alert("তথ্য পাওয়া যায়নি।");
+
+ editing = {collection,id};
+
+ const fields = collection==="workers"
+ ? ["name","phone","category","location","experience","salary","details"]
+ : collection==="jobs"
+ ? ["title","category","location","salary","phone","details"]
+ : ["service","name","phone","location","date","details"];
+
+ $("editFields").innerHTML = fields.map(key=>`
+  <label>${escapeHTML(key)}</label>
+  <input name="${escapeHTML(key)}" value="${escapeHTML(item[key]||"")}">
  `).join("");
 
  $("editModal").classList.add("show");
 }
+
+/* SAVE EDIT */
+$("editForm").addEventListener("submit",async function(e){
+ e.preventDefault();
+ if(!isAdmin || !editing) return;
+
+ const btn = this.querySelector('button[type="submit"]');
+ btn.disabled = true;
+
+ try{
+  await db.collection(editing.collection).doc(editing.id).update(formData(this));
+  alert("তথ্য পরিবর্তন হয়েছে।");
+  closeEdit();
+ }catch(err){
+  alert("পরিবর্তন হয়নি: "+err.message);
+ }finally{
+  btn.disabled = false;
+ }
+});
 
 function closeEdit(){
  $("editModal").classList.remove("show");
  editing = null;
 }
 
-async function saveEdit(){
- if(!isAdmin || !editing) return;
-
- const fields = editing.type === "workers"
-  ? ["name","phone","category","location","experience","salary","details"]
-  : editing.type === "jobs"
-  ? ["title","category","location","salary","phone","details"]
-  : ["service","name","phone","location","date","details"];
-
- const updates = {};
- fields.forEach(field=>{
-  updates[field] = $("edit_"+field).value.trim();
- });
-
- try{
-  await db.collection(editing.type).doc(editing.id).update(updates);
-  closeEdit();
-  alert("তথ্য পরিবর্তন হয়েছে।");
- }catch(err){
-  alert("পরিবর্তন করা যায়নি: " + err.message);
- }
-}
-
-async function toggleRecord(type,id,active){
+/* TOGGLE RECORD */
+async function toggleRecord(collection,id){
  if(!isAdmin) return alert("অ্যাডমিন লগইন করুন।");
+
+ const list = collection==="workers" ? workers :
+              collection==="jobs" ? jobs : services;
+
+ const item = list.find(x=>x.id===id);
+ if(!item) return;
+
  try{
-  await db.collection(type).doc(id).update({active:active === "true"});
-  alert("তথ্যের অবস্থা পরিবর্তন হয়েছে।");
+  await db.collection(collection).doc(id).update({
+   active:item.active===false
+  });
  }catch(err){
-  alert("পরিবর্তন করা যায়নি: " + err.message);
+  alert(err.message);
  }
 }
 
-async function deleteRecord(type,id){
+/* DELETE RECORD */
+async function deleteRecord(collection,id){
  if(!isAdmin) return alert("অ্যাডমিন লগইন করুন।");
- if(!confirm("আপনি কি নিশ্চিতভাবে এই তথ্য ডিলিট করতে চান?")) return;
+ if(!confirm("এই তথ্য মুছে ফেলবেন?")) return;
 
  try{
-  await db.collection(type).doc(id).delete();
-  alert("তথ্য ডিলিট হয়েছে।");
+  await db.collection(collection).doc(id).delete();
+  alert("তথ্য মুছে ফেলা হয়েছে।");
  }catch(err){
-  alert("ডিলিট করা যায়নি: " + err.message);
+  alert(err.message);
  }
 }
 
-authReady = auth.currentUser
- ? Promise.resolve()
- : auth.signInAnonymously().catch(err=>{
-    console.error(err);
-    status("Firebase সংযোগ সমস্যা: " + err.message);
-   });
-
-renderWorkers();
-renderJobs();
-renderServices();
-  function publishNotice(){
+/* PUBLISH NOTICE */
+async function publishNotice(){
  if(!isAdmin) return alert("অ্যাডমিন লগইন করুন।");
 
  const message = $("noticeText").value.trim();
  if(!message) return alert("নোটিশ লিখুন।");
 
- db.collection("notices").doc("current").set({
-  message: message,
-  updatedAt: firebase.firestore.FieldValue.serverTimestamp()
- }).then(()=>{
-  alert("নোটিশ প্রকাশ হয়েছে।");
+ try{
+  await db.collection("notices").doc("current").set({
+   message:message,
+   updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  });
+
   $("noticeText").value = "";
- }).catch(err=>{
-  alert("নোটিশ প্রকাশ হয়নি: " + err.message);
- });
+  alert("নোটিশ প্রকাশ হয়েছে।");
+ }catch(err){
+  alert("নোটিশ প্রকাশ হয়নি: "+err.message);
+ }
 }
 
-function clearNotice(){
+/* CLEAR NOTICE */
+async function clearNotice(){
  if(!isAdmin) return alert("অ্যাডমিন লগইন করুন।");
  if(!confirm("নোটিশ মুছে ফেলবেন?")) return;
 
- db.collection("notices").doc("current").delete()
- .then(()=>alert("নোটিশ মুছে ফেলা হয়েছে।"))
- .catch(err=>alert(err.message));
+ try{
+  await db.collection("notices").doc("current").delete();
+  alert("নোটিশ মুছে ফেলা হয়েছে।");
+ }catch(err){
+  alert(err.message);
+ }
 }
 
-db.collection("notices").doc("current").onSnapshot(doc=>{
- $("noticeBoard").textContent =
-  doc.exists ? doc.data().message : "কোনো নোটিশ প্রকাশ করা হয়নি।";
-},err=>{
- console.error(err);
-});
+/* START */
+updateAdminView();
+renderWorkers();
+renderJobs();
+renderServices();
+
 </script>
 </body>
 </html>
